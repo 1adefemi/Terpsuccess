@@ -13,7 +13,7 @@ export default function TermsPage() {
         {[
           {
             title: "1. About TerpSuccess",
-            body: "TerpSuccess is an independent, student-built platform for UMD students. It is not affiliated with, endorsed by, or operated by the University of Maryland. By using TerpSuccess, you agree to these terms."
+            body: "TerpSuccess is a platform for UMD students. It is not affiliated with, endorsed by, or operated by the University of Maryland. By using TerpSuccess, you agree to these terms."
           },
           {
             title: "2. User-Submitted Content",
@@ -56,7 +56,7 @@ export default function TermsPage() {
 
         <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 24, marginTop: 16 }}>
           <p style={{ fontSize: 13, color: "#9A9A9A", lineHeight: 1.6 }}>
-            TerpSuccess is an independent student project and is not affiliated with or endorsed by the University of Maryland.
+            TerpSuccess is not affiliated with or endorsed by the University of Maryland.
             Grade data sourced from <a href="https://planetterp.com" target="_blank" rel="noreferrer" style={{ color: "#B89A00" }}>PlanetTerp</a>.
             Course data sourced from <a href="https://umd.io" target="_blank" rel="noreferrer" style={{ color: "#B89A00" }}>umd.io</a>.
           </p>

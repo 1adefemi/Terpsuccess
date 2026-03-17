@@ -19,7 +19,7 @@ export default function HomePage() {
       <Nav />
       <section style={{ background: "#1A1A1A", padding: "64px 32px 72px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "repeating-linear-gradient(90deg,#FFD200 0,#FFD200 25%,#1A1A1A 25%,#1A1A1A 50%,#E03A3E 50%,#E03A3E 75%,#1A1A1A 75%,#1A1A1A 100%)", backgroundSize: "40px 4px" }} />
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,210,0,0.12)", border: "1px solid rgba(255,210,0,0.25)", color: "#FFD200", fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", padding: "5px 14px", borderRadius: 20, marginBottom: 24, textTransform: "uppercase" }}>🐢 Independent Student Project · UMD</div>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,210,0,0.12)", border: "1px solid rgba(255,210,0,0.25)", color: "#FFD200", fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", padding: "5px 14px", borderRadius: 20, marginBottom: 24, textTransform: "uppercase" }}>🐢 UMD Course Intelligence</div>
         <h1 style={{ fontSize: "clamp(36px,5vw,52px)", fontWeight: 800, color: "white", lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 16 }}>
           Ace your semester.<br /><span style={{ color: "#FFD200" }}>Know before you go.</span>
         </h1>
@@ -83,7 +83,7 @@ export default function HomePage() {
           Built by Terps, for Terps 🐢 · <span style={{ color: "#FFD200" }}>TerpSuccess</span>
         </div>
         <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>
-          TerpSuccess is an independent student project and is not affiliated with or endorsed by the University of Maryland. · Grade data via <a href="https://planetterp.com" target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>PlanetTerp</a> · <a href="/terms" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>Terms of Service</a>
+          TerpSuccess is not affiliated with or endorsed by the University of Maryland. · Grade data via <a href="https://planetterp.com" target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>PlanetTerp</a> · <a href="/terms" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>Terms of Service</a>
         </div>
       </footer>
     </main>
