@@ -29,6 +29,7 @@ export default async function CoursePage({ params }: Props) {
           reports: { where: { status: "APPROVED" } },
           midterms: { include: { reviews: { where: { status: "APPROVED" } } }, orderBy: { midtermNum: "asc" } },
           syllabusData: true,
+          gradeDistributions: true,
         },
         orderBy: [{ year: "desc" }, { semester: "asc" }],
       },
@@ -133,6 +134,58 @@ export default async function CoursePage({ params }: Props) {
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 24 }}>
           <div>
+
+        {/* Grade Distribution */}
+        {(() => {
+          const allGrades = course.offerings.flatMap(o => (o as unknown as { gradeDistributions: { avgGpa: number; totalStudents: number; aPlus: number; a: number; aMinus: number; bPlus: number; b: number; bMinus: number; cPlus: number; c: number; cMinus: number; dPlus: number; d: number; dMinus: number; f: number; w: number }[] }).gradeDistributions || []);
+          if (allGrades.length === 0) return null;
+          const totals = allGrades.reduce((acc, g) => ({
+            aPlus: acc.aPlus + g.aPlus, a: acc.a + g.a, aMinus: acc.aMinus + g.aMinus,
+            bPlus: acc.bPlus + g.bPlus, b: acc.b + g.b, bMinus: acc.bMinus + g.bMinus,
+            cPlus: acc.cPlus + g.cPlus, c: acc.c + g.c, cMinus: acc.cMinus + g.cMinus,
+            dPlus: acc.dPlus + g.dPlus, d: acc.d + g.d, dMinus: acc.dMinus + g.dMinus,
+            f: acc.f + g.f, w: acc.w + g.w, total: acc.total + g.totalStudents,
+          }), { aPlus:0,a:0,aMinus:0,bPlus:0,b:0,bMinus:0,cPlus:0,c:0,cMinus:0,dPlus:0,d:0,dMinus:0,f:0,w:0,total:0 });
+          const avgGpa = allGrades.reduce((sum, g) => sum + g.avgGpa * g.totalStudents, 0) / totals.total;
+          const pct = (n: number) => totals.total > 0 ? ((n / totals.total) * 100).toFixed(1) : "0";
+          const bars = [
+            { label: "A", count: totals.aPlus + totals.a + totals.aMinus, color: "#15803D" },
+            { label: "B", count: totals.bPlus + totals.b + totals.bMinus, color: "#65A30D" },
+            { label: "C", count: totals.cPlus + totals.c + totals.cMinus, color: "#D97706" },
+            { label: "D", count: totals.dPlus + totals.d + totals.dMinus, color: "#EA580C" },
+            { label: "F", count: totals.f, color: "#E03A3E" },
+            { label: "W", count: totals.w, color: "#9A9A9A" },
+          ];
+          const maxCount = Math.max(...bars.map(b => b.count));
+          return (
+            <section style={{ marginBottom: 32 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, paddingBottom: 10, borderBottom: "2px solid #FFD200" }}>
+                Grade Distribution
+                <span style={{ fontSize: 12, fontWeight: 400, color: "#9A9A9A", marginLeft: 10 }}>via PlanetTerp · {totals.total.toLocaleString()} students</span>
+              </h2>
+              <div style={{ background: "white", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 12, padding: 20 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                  <div style={{ textAlign: "center", background: "#F3F0E6", borderRadius: 10, padding: "10px 20px" }}>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: "#1A1A1A" }}>{avgGpa.toFixed(2)}</div>
+                    <div style={{ fontSize: 11, color: "#9A9A9A", textTransform: "uppercase", letterSpacing: "0.5px" }}>Avg GPA</div>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    {bars.map(bar => (
+                      <div key={bar.label} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 12, fontWeight: 700, minWidth: 20, color: bar.color }}>{bar.label}</span>
+                        <div style={{ flex: 1, background: "rgba(0,0,0,0.06)", borderRadius: 4, height: 20, overflow: "hidden" }}>
+                          <div style={{ height: "100%", background: bar.color, width: maxCount > 0 ? `${(bar.count / maxCount) * 100}%` : "0%", borderRadius: 4, transition: "width 0.3s" }} />
+                        </div>
+                        <span style={{ fontSize: 12, color: "#9A9A9A", minWidth: 40, textAlign: "right" }}>{pct(bar.count)}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
             {/* Professors */}
             <section style={{ marginBottom: 32 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, paddingBottom: 10, borderBottom: "2px solid #FFD200" }}>Professors</h2>

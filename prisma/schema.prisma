@@ -42,7 +42,8 @@ model Course {
   departmentId String
   offerings    CourseOffering[]
   topics       CourseTopic[]
-  syllabusData SyllabusData[]
+  syllabusData       SyllabusData[]
+  gradeDistributions GradeDistribution[]
   resources    StudyResource[]
 }
 
@@ -88,7 +89,8 @@ model CourseOffering {
   year         Int
   reports      Report[]
   midterms     MidtermRecord[]
-  syllabusData SyllabusData?
+  syllabusData      SyllabusData?
+  gradeDistributions GradeDistribution[]
 
   @@unique([courseId, professorId, semester, year])
 }
@@ -211,3 +213,30 @@ enum ResourceType {
   FLASHCARDS
   WEBSITE
 }
+
+model GradeDistribution {
+  id            String         @id @default(cuid())
+  offering      CourseOffering @relation(fields: [offeringId], references: [id])
+  offeringId    String
+  course        Course         @relation(fields: [courseId], references: [id])
+  courseId      String
+  avgGpa        Float
+  totalStudents Int
+  aPlus         Int            @default(0)
+  a             Int            @default(0)
+  aMinus        Int            @default(0)
+  bPlus         Int            @default(0)
+  b             Int            @default(0)
+  bMinus        Int            @default(0)
+  cPlus         Int            @default(0)
+  c             Int            @default(0)
+  cMinus        Int            @default(0)
+  dPlus         Int            @default(0)
+  d             Int            @default(0)
+  dMinus        Int            @default(0)
+  f             Int            @default(0)
+  w             Int            @default(0)
+  source        String         @default("PLANETTERP")
+  createdAt     DateTime       @default(now())
+}
+
