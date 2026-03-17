@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Allow all search engines to index the site
+Sitemap: https://terpsuccess.vercel.app/sitemap.xml

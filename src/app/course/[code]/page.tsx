@@ -343,6 +343,43 @@ export default async function CoursePage({ params }: Props) {
               <div style={{ fontSize: 12, color: "#9A9A9A" }}>Videos, textbooks, courses & more</div>
             </Link>
 
+            {/* Gen-Eds */}
+            {course.genEd && course.genEd.length > 0 && (
+              <div style={{ background: "white", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 12, padding: 18, marginBottom: 16 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>Gen-Ed Requirements</h3>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {course.genEd.map((g: string) => (
+                    <span key={g} style={{ fontSize: 12, fontWeight: 700, background: "#E0F2FE", color: "#0369A1", padding: "4px 10px", borderRadius: 20 }}>{g}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Prerequisites */}
+            {course.prereq && (course.prereq.prereqs || course.prereq.coreqs || course.prereq.restrictions) && (
+              <div style={{ background: "white", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 12, padding: 18, marginBottom: 16 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>Requirements</h3>
+                {course.prereq.prereqs && (
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#9A9A9A", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: 4 }}>Prerequisites</div>
+                    <p style={{ fontSize: 13, color: "#5A5A5A", lineHeight: 1.5 }}>{course.prereq.prereqs}</p>
+                  </div>
+                )}
+                {course.prereq.coreqs && (
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#9A9A9A", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: 4 }}>Corequisites</div>
+                    <p style={{ fontSize: 13, color: "#5A5A5A", lineHeight: 1.5 }}>{course.prereq.coreqs}</p>
+                  </div>
+                )}
+                {course.prereq.restrictions && (
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#9A9A9A", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: 4 }}>Restrictions</div>
+                    <p style={{ fontSize: 13, color: "#5A5A5A", lineHeight: 1.5 }}>{course.prereq.restrictions}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div style={{ background: "#1A1A1A", borderRadius: 12, padding: 18 }}>
               <h3 style={{ fontSize: 14, fontWeight: 700, color: "white", marginBottom: 6 }}>Took this course?</h3>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 14, lineHeight: 1.5 }}>Share your experience and help future Terps.</p>

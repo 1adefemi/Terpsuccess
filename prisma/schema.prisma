@@ -44,6 +44,7 @@ model Course {
   topics       CourseTopic[]
   syllabusData       SyllabusData[]
   gradeDistributions GradeDistribution[]
+  prereq             CoursePrereq?
   resources    StudyResource[]
 }
 
@@ -238,5 +239,14 @@ model GradeDistribution {
   w             Int            @default(0)
   source        String         @default("PLANETTERP")
   createdAt     DateTime       @default(now())
+}
+
+model CoursePrereq {
+  id           String  @id @default(cuid())
+  course       Course  @relation(fields: [courseId], references: [id])
+  courseId     String  @unique
+  prereqs      String?
+  coreqs       String?
+  restrictions String?
 }
 

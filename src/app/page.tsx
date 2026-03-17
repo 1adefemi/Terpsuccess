@@ -83,7 +83,7 @@ export default function HomePage() {
           Built by Terps, for Terps 🐢 · <span style={{ color: "#FFD200" }}>TerpSuccess</span>
         </div>
         <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>
-          TerpSuccess is an independent student project and is not affiliated with or endorsed by the University of Maryland. · Grade data via <a href="https://planetterp.com" target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>PlanetTerp</a>
+          TerpSuccess is an independent student project and is not affiliated with or endorsed by the University of Maryland. · Grade data via <a href="https://planetterp.com" target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>PlanetTerp</a> · <a href="/terms" style={{ color: "rgba(255,255,255,0.9)", textDecoration: "underline" }}>Terms of Service</a>
         </div>
       </footer>
     </main>
