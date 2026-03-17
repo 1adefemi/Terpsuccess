@@ -1,0 +1,106 @@
+// This is your Prisma schema file
+// Run: npx prisma generate && npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  reports   Report[]
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model Department {
+  id      String   @id @default(cuid())
+  code    String   @unique // e.g. "CMSC"
+  name    String   // e.g. "Computer Science"
+  courses Course[]
+}
+
+model Course {
+  id           String     @id @default(cuid())
+  courseCode   String     @unique // e.g. "CMSC351"
+  title        String     // e.g. "Algorithms"
+  description  String?
+  credits      Int?
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+  offerings    CourseOffering[]
+}
+
+model Professor {
+  id        String           @id @default(cuid())
+  fullName  String
+  email     String?
+  offerings CourseOffering[]
+}
+
+model CourseOffering {
+  id          String    @id @default(cuid())
+  course      Course    @relation(fields: [courseId], references: [id])
+  courseId    String
+  professor   Professor @relation(fields: [professorId], references: [id])
+  professorId String
+  semester    Semester
+  year        Int
+  reports     Report[]
+
+  @@unique([courseId, professorId, semester, year])
+}
+
+enum Semester {
+  FALL
+  SPRING
+  SUMMER
+  WINTER
+}
+
+model Report {
+  id               String         @id @default(cuid())
+  offering         CourseOffering @relation(fields: [offeringId], references: [id])
+  offeringId       String
+  user             User?          @relation(fields: [userId], references: [id])
+  userId           String?
+
+  // Core metrics
+  overallDifficulty    Int    // 1-10
+  weeklyWorkloadHours  Float  // e.g. 8.5
+  assignmentCount      Int
+  midtermCount         Int
+  midtermAverage       Float? // optional, e.g. 72.5
+  midtermDifficulty    Int?   // 1-10, optional
+  classType            ClassType
+
+  // Text
+  tipText              String?
+
+  // Moderation
+  status               ReportStatus @default(PENDING)
+  createdAt            DateTime     @default(now())
+}
+
+enum ClassType {
+  EXAM_HEAVY
+  PROJECT_HEAVY
+  BALANCED
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
