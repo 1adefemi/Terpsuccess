@@ -136,7 +136,7 @@ function BrowseContent() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 20 }}>
               {ALPHABET.map(l => (
                 <button key={l} onClick={() => setActiveLetter(l)}
-                  style={{ width: 36, height: 36, borderRadius: 8, border: "none", cursor: "pointer", fontSize: 14, fontWeight: 700, background: activeLetter === l ? "#FFD200" : letterCounts[l] > 0 ? "white" : "rgba(0,0,0,0.04)", color: activeLetter === l ? "#1A1A1A" : letterCounts[l] > 0 ? "#1A1A1A" : "#C0C0C0", border: activeLetter === l ? "2px solid #FFD200" : "1px solid rgba(0,0,0,0.08)" as unknown as undefined, position: "relative" }}>
+                  style={{ width: 36, height: 36, borderRadius: 8, border: activeLetter === l ? "2px solid #FFD200" : "1px solid rgba(0,0,0,0.08)", cursor: "pointer", fontSize: 14, fontWeight: 700, background: activeLetter === l ? "#FFD200" : letterCounts[l] > 0 ? "white" : "rgba(0,0,0,0.04)", color: activeLetter === l ? "#1A1A1A" : letterCounts[l] > 0 ? "#1A1A1A" : "#C0C0C0", position: "relative" }}>
                   {l}
                   {letterCounts[l] > 0 && (
                     <span style={{ position: "absolute", top: -4, right: -4, background: "#E03A3E", color: "white", fontSize: 9, fontWeight: 700, borderRadius: "50%", width: 14, height: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
