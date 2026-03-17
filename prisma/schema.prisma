@@ -1,6 +1,3 @@
-// This is your Prisma schema file
-// Run: npx prisma generate && npx prisma db push
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  role      Role     @default(STUDENT)
-  createdAt DateTime @default(now())
-  reports   Report[]
+  id               String            @id @default(cuid())
+  email            String            @unique
+  name             String?
+  role             Role              @default(STUDENT)
+  createdAt        DateTime          @default(now())
+  reports          Report[]
+  professorReviews ProfessorReview[]
+  midtermReviews   MidtermReview[]
 }
 
 enum Role {
@@ -26,40 +25,121 @@ enum Role {
 
 model Department {
   id      String   @id @default(cuid())
-  code    String   @unique // e.g. "CMSC"
-  name    String   // e.g. "Computer Science"
+  code    String   @unique
+  name    String
   courses Course[]
 }
 
 model Course {
-  id           String     @id @default(cuid())
-  courseCode   String     @unique // e.g. "CMSC351"
-  title        String     // e.g. "Algorithms"
+  id           String           @id @default(cuid())
+  courseCode   String           @unique
+  title        String
   description  String?
   credits      Int?
-  department   Department @relation(fields: [departmentId], references: [id])
+  genEd        String[]
+  viewCount    Int              @default(0)
+  department   Department       @relation(fields: [departmentId], references: [id])
   departmentId String
   offerings    CourseOffering[]
+  topics       CourseTopic[]
+  syllabusData SyllabusData[]
+}
+
+model CourseTopic {
+  id         String  @id @default(cuid())
+  course     Course  @relation(fields: [courseId], references: [id])
+  courseId   String
+  topic      String
+  midtermNum Int?
+  frequency  Int     @default(1)
 }
 
 model Professor {
-  id        String           @id @default(cuid())
+  id        String            @id @default(cuid())
   fullName  String
   email     String?
   offerings CourseOffering[]
+  reviews   ProfessorReview[]
+}
+
+model ProfessorReview {
+  id          String       @id @default(cuid())
+  professor   Professor    @relation(fields: [professorId], references: [id])
+  professorId String
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      String?
+  courseCode  String
+  rating      Int
+  comment     String?
+  semester    Semester
+  year        Int
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
 }
 
 model CourseOffering {
-  id          String    @id @default(cuid())
-  course      Course    @relation(fields: [courseId], references: [id])
+  id          String          @id @default(cuid())
+  course      Course          @relation(fields: [courseId], references: [id])
   courseId    String
-  professor   Professor @relation(fields: [professorId], references: [id])
+  professor   Professor       @relation(fields: [professorId], references: [id])
   professorId String
   semester    Semester
   year        Int
   reports     Report[]
+  midterms    MidtermRecord[]
+  syllabusData SyllabusData?
 
   @@unique([courseId, professorId, semester, year])
+}
+
+// Structured syllabus info submitted by students — no file uploads
+model SyllabusData {
+  id                  String         @id @default(cuid())
+  offering            CourseOffering @relation(fields: [offeringId], references: [id])
+  offeringId          String         @unique
+  course              Course         @relation(fields: [courseId], references: [id])
+  courseId            String
+  examWeight          Int?
+  hwWeight            Int?
+  projectWeight       Int?
+  quizWeight          Int?
+  participationWeight Int?
+  numExams            Int?
+  numHomeworks        Int?
+  numProjects         Int?
+  numQuizzes          Int?
+  hasFinal            Boolean        @default(true)
+  curvePolicy         String?
+  latePolicy          String?
+  status              ReportStatus   @default(PENDING)
+  createdAt           DateTime       @default(now())
+}
+
+model MidtermRecord {
+  id         String          @id @default(cuid())
+  offering   CourseOffering  @relation(fields: [offeringId], references: [id])
+  offeringId String
+  midtermNum Int
+  avgScore   Float?
+  reviews    MidtermReview[]
+  createdAt  DateTime        @default(now())
+
+  @@unique([offeringId, midtermNum])
+}
+
+model MidtermReview {
+  id            String        @id @default(cuid())
+  midterm       MidtermRecord @relation(fields: [midtermId], references: [id])
+  midtermId     String
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        String?
+  score         Float?
+  classAvg      Float?
+  difficulty    Int
+  topicsCovered String[]
+  tips          String?
+  status        ReportStatus  @default(PENDING)
+  createdAt     DateTime      @default(now())
 }
 
 enum Semester {
@@ -70,27 +150,21 @@ enum Semester {
 }
 
 model Report {
-  id               String         @id @default(cuid())
-  offering         CourseOffering @relation(fields: [offeringId], references: [id])
-  offeringId       String
-  user             User?          @relation(fields: [userId], references: [id])
-  userId           String?
-
-  // Core metrics
-  overallDifficulty    Int    // 1-10
-  weeklyWorkloadHours  Float  // e.g. 8.5
-  assignmentCount      Int
-  midtermCount         Int
-  midtermAverage       Float? // optional, e.g. 72.5
-  midtermDifficulty    Int?   // 1-10, optional
-  classType            ClassType
-
-  // Text
-  tipText              String?
-
-  // Moderation
-  status               ReportStatus @default(PENDING)
-  createdAt            DateTime     @default(now())
+  id                  String         @id @default(cuid())
+  offering            CourseOffering @relation(fields: [offeringId], references: [id])
+  offeringId          String
+  user                User?          @relation(fields: [userId], references: [id])
+  userId              String?
+  overallDifficulty   Int
+  weeklyWorkloadHours Float
+  assignmentCount     Int
+  midtermCount        Int
+  midtermAverage      Float?
+  midtermDifficulty   Int?
+  classType           ClassType
+  tipText             String?
+  status              ReportStatus   @default(PENDING)
+  createdAt           DateTime       @default(now())
 }
 
 enum ClassType {
