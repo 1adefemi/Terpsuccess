@@ -117,7 +117,7 @@ export default async function ProfessorPage({ params }: Props) {
               Courses Taught
             </h2>
             <div className="space-y-3">
-              {[...courseMap.entries()].map(([code, data]) => {
+            {Array.from(courseMap.entries()).map(([code, data]) => {
                 const m = computeMetrics(data.reports);
                 return (
                   <Link
