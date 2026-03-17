@@ -2,6 +2,8 @@
 // Simple admin panel to approve/reject pending reports
 // TODO: Add proper auth protection before deploying
 
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import AdminClient from "./AdminClient";
 

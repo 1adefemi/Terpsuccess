@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CourseWithMetrics } from "@/types";
 
 const DEPARTMENTS = ["CMSC", "ENEE", "MATH", "STAT", "PHYS", "CHEM", "BMGT", "ECON"];
 
-export default function BrowsePage() {
+function BrowseContent() {
   const params = useSearchParams();
   const [query, setQuery] = useState(params.get("q") || "");
   const [dept, setDept] = useState("");
@@ -98,5 +98,13 @@ export default function BrowsePage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center text-white/40">Loading...</div>}>
+      <BrowseContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -46,7 +46,7 @@ function Slider({
   );
 }
 
-export default function SubmitPage() {
+function SubmitContent() {
   const params = useSearchParams();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -318,5 +318,13 @@ export default function SubmitPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+export default function SubmitPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center text-white/40">Loading...</div>}>
+      <SubmitContent />
+    </Suspense>
   );
 }
