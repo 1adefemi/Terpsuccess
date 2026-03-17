@@ -34,6 +34,7 @@ export default async function CoursePage({ params }: Props) {
         orderBy: [{ year: "desc" }, { semester: "asc" }],
       },
       topics: { orderBy: { frequency: "desc" } },
+      prereq: true,
     },
   });
 
