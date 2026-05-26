@@ -102,18 +102,18 @@ model SyllabusData {
   offeringId          String         @unique
   course              Course         @relation(fields: [courseId], references: [id])
   courseId            String
-  gradingBreakdown    Json?
-  cutoffA             Float?
-  cutoffB             Float?
-  cutoffC             Float?
-  cutoffD             Float?
-  hasCurve            Boolean        @default(false)
+  examWeight          Int?
+  hwWeight            Int?
+  projectWeight       Int?
+  quizWeight          Int?
+  participationWeight Int?
+  numExams            Int?
+  numHomeworks        Int?
+  numProjects         Int?
+  numQuizzes          Int?
+  hasFinal            Boolean        @default(true)
   curvePolicy         String?
-  textbook            String?
-  weeklyTopics        Json?
   latePolicy          String?
-  attendancePolicy    String?
-  extraCreditPolicy   String?
   status              ReportStatus   @default(PENDING)
   createdAt           DateTime       @default(now())
 }
