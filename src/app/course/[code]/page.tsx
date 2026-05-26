@@ -28,7 +28,7 @@ export default async function CoursePage({ params }: Props) {
           professor: { include: { reviews: { where: { status: "APPROVED", courseCode: params.code.toUpperCase() } } } },
           reports: { where: { status: "APPROVED" } },
           midterms: { include: { reviews: { where: { status: "APPROVED" } } }, orderBy: { midtermNum: "asc" } },
-          syllabusData: true,
+
           gradeDistributions: true,
         },
         orderBy: [{ year: "desc" }, { semester: "asc" }],
@@ -86,7 +86,7 @@ export default async function CoursePage({ params }: Props) {
     topicsByMidterm.get(t.midtermNum!)!.push(t);
   }
 
-  const syllabusEntries = course.offerings.filter(o => o.syllabusData).map(o => ({ ...o.syllabusData!, semester: o.semester, year: o.year, professorName: o.professor.fullName }));
+
 
   const examItems = [
     { label: "Midterm 1", num: 1 }, { label: "Midterm 2", num: 2 }, { label: "Midterm 3", num: 3 },
@@ -318,24 +318,7 @@ export default async function CoursePage({ params }: Props) {
               </div>
             )}
 
-            {/* Syllabus breakdown */}
-            {syllabusEntries.length > 0 && (
-              <div style={{ background: "white", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 12, padding: 18, marginBottom: 16 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Syllabus Breakdown</h3>
-                {syllabusEntries.map(s => (
-                  <div key={s.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.06)", paddingBottom: 12, marginBottom: 12 }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#E03A3E", marginBottom: 8 }}>{s.semester} {s.year} · {s.professorName}</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-                      {s.examWeight != null && <div style={{ fontSize: 12, color: "#5A5A5A" }}>Exams: <strong>{s.examWeight}%</strong></div>}
-                      {s.hwWeight != null && <div style={{ fontSize: 12, color: "#5A5A5A" }}>HW: <strong>{s.hwWeight}%</strong></div>}
-                      {s.projectWeight != null && <div style={{ fontSize: 12, color: "#5A5A5A" }}>Projects: <strong>{s.projectWeight}%</strong></div>}
-                      {s.numHomeworks != null && <div style={{ fontSize: 12, color: "#5A5A5A" }}>HW count: <strong>{s.numHomeworks}</strong></div>}
-                    </div>
-                    {s.curvePolicy && <div style={{ fontSize: 12, color: "#5A5A5A", marginTop: 6 }}>Curve: {s.curvePolicy}</div>}
-                  </div>
-                ))}
-              </div>
-            )}
+           
 
             {/* Resources link */}
             <Link href={`/resources/${course.courseCode}`} style={{ display: "block", background: "white", border: "2px solid #FFD200", borderRadius: 12, padding: 18, marginBottom: 16, textAlign: "center" }}>
